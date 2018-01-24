@@ -1,13 +1,19 @@
 import praw
 
+## Authentication for Reddit
 reddit = praw.Reddit(client_id='clientid',
                      client_secret='clientsecret',
                      username='username',
                      password='password',
                      user_agent='useragent')
 
-
 def subm_and_comm(subred, lim):
+    '''
+    (string, nat) -> None
+
+    Prints up to lim number of recent posts in subred
+
+    '''
     subreddit = reddit.subreddit(subred)
     category = subreddit.hot(limit=lim)
 
@@ -22,6 +28,12 @@ def subm_and_comm(subred, lim):
                 print("Comment by " + str(comment.author) + ": " + comment.body)
 
 def stream_comment(subred):
+    '''
+    (string) -> None
+
+    Streams and prints comments that are posted in real-time
+
+    '''
     subreddit = reddit.subreddit(subred)
     
     for comment in subreddit.stream.comments():
@@ -31,6 +43,12 @@ def stream_comment(subred):
             pass
 
 def stream_submissions(subred):
+    '''
+    (string) -> None
+
+    Streams and prints submissions that are posted in real-time
+    
+    '''
     subreddit = reddit.subreddit(subred)
     for submission in subreddit.stream.submissions():
         try:
@@ -39,6 +57,14 @@ def stream_submissions(subred):
             pass
 
 def filter_sub(substr, subred, count=False):
+    '''
+    (string, string, [bool]) -> None
+
+    If count=False, prints all submissions in subred in which its title
+    contains substr.
+    If count=True, prints the number of submissions that matching the substr
+
+    '''
     counter = 0
     
     subreddit = reddit.subreddit(subred)
@@ -61,6 +87,13 @@ def filter_sub(substr, subred, count=False):
                 pass
 
 def filter_user(user, subred, count=False):
+    '''
+    (string, string, [bool]) -> None
+
+    If count=False, prints all submissions in subred that are submitted by user
+    If count=True, prints the number of submissions that are submitted by user
+
+    '''
     counter = 0
 
     subreddit = reddit.subreddit(subred)
